@@ -26,6 +26,6 @@ The output text will look something like this:
 
 ## Notes
 
-- The program automatically resizes the image to fit within a 300px width for better size.
+- The program automatically resizes the image to fit within a 300px width for better looking.
 
 Enjoy transforming your images into ASCII art!
