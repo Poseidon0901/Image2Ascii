@@ -1,6 +1,6 @@
 # Image2Ascii
 This project is used to convert image to ascii characters (like @#$!%^&amp;*)
 
-#Example:
+# Example:
 ![example.png](https://i.imgur.com/psPeide.png)
 it will output to output.txt
