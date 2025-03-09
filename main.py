@@ -1,17 +1,24 @@
-import cv2, os
+import cv2, os, sys
 from PIL import Image
 import numpy as np
 
-program_dir = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, 'frozen', False):
+    program_dir = os.path.dirname(sys.executable)
+else:
+    program_dir = os.path.dirname(os.path.abspath(__file__))
+print(program_dir)
 image_extensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif']
 image_file = ""
+founding = True
 
 for filename in os.listdir(program_dir):
     if any(filename.endswith(ext) for ext in image_extensions):
         image_file = os.path.join(program_dir, filename)
+        founding = True
         break
-    elif not any(filename.endswith(ext) for ext in image_extensions):
+    elif not founding:
         print("No supported format or there is no file.")
+        os.system("pause")
         exit(1)
 if image_file.endswith(".gif"):
     image = Image.open(image_file)
@@ -23,12 +30,15 @@ else:
 
 if image is None:
     print(f"Error:Cannot load image {image_file}.")
+    os.system("pause")
     exit(1)
 
 height, width, channels = image.shape
 
 if channels not in [3, 4]:
     print("Error:Channels other than 3 or 4 are not supported.")
+    os.system("pause")
+    exit(1)
 
 new_width = 300
 aspect_ratio = height / width
@@ -97,3 +107,4 @@ with open('output.txt', 'w', encoding='utf-8') as file:
         for l in range(len(gray_map[k])):
             file.write(gray_map[k][l])
         file.write("\n")
+print("output successful")
