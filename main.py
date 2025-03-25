@@ -9,17 +9,18 @@ else:
 print(program_dir)
 image_extensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif']
 image_file = ""
-founding = True
+founded = False
 
 for filename in os.listdir(program_dir):
     if any(filename.endswith(ext) for ext in image_extensions):
         image_file = os.path.join(program_dir, filename)
-        founding = True
+        founded = True
         break
-    elif not founding:
-        print("No supported format or there is no file.")
-        os.system("pause")
-        exit(1)
+if not founded:
+    print("No supported format or there is no file.")
+    os.system("pause")
+    exit(1)
+
 if image_file.endswith(".gif"):
     image = Image.open(image_file)
     image.save("image.png")
