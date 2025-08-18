@@ -1,6 +1,9 @@
 import os, sys
 from PIL import Image
 import numpy as np
+from colorama import init
+
+init(autoreset=True)
 
 programDir = os.path.dirname(os.path.abspath(__file__))
 print(programDir)
@@ -71,12 +74,12 @@ with open('output.txt', 'w', encoding='utf-8') as file:
         for l in range(len(gray_map[k])):
             file.write(gray_map[k][l])
         file.write("\n")
-"""
+
 if printOutput:
-    term = os.environ.get("TERM", "")
-    if "xterm" in term:
-        os.system()
-"""
+    for row in gray_map:
+        print("".join(row))
+    
+
     
 
 print("output successful")
