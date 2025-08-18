@@ -16,7 +16,6 @@ for filename in os.listdir(programDir):
 
 if not validFileFounded:
     print("No supported file format or there is no file.")
-    os.system("pause")
     exit(1)
 
 try:
@@ -26,13 +25,24 @@ try:
     print(f"Converted image mode: {image.mode}")
 except Exception as e:
     print(f"Cannot load image file: {imageFile}\nError: {e}")
-    os.system("pause")
     exit(1)
 
+print(f"Converting Image: {imageFile}")
 width, height = image.size[0], image.size[1]
 
 aspectRatio = height / width
-newSize = 300, int(300 * aspectRatio)
+while True:
+    newWidth = input("Please enter width that you want(min:12, max:300): ")
+    if newWidth.isdigit():
+        break
+    print("Please enter a valid integer.")
+
+printOutput = input("Do you wanna print output after conversion? Y/N(Default N): ")
+printOutput = True if printOutput == "Y" else False
+
+newWidth = int(newWidth)
+newWidth = min(max(12, newWidth), 300)
+newSize = newWidth, int(newWidth * aspectRatio)
 
 image = image.resize(newSize, Image.LANCZOS)
 
@@ -46,25 +56,13 @@ gray_symbols = ['＃', '＠', '＆', '％', '！', '？', '＜', '＞', '　']
 for i in range(image.size[1]):
         gray_map.append([])
         for j in range(image.size[0]):
-            a = arrImage[i, j][3]
-            Y = LmodeImage[i, j]
+            Y = int(LmodeImage[i, j])
+            r, g, b, a = arrImage[i, j]
             if a >= 128:
-                if Y < 33:
-                    gray_map[i].append(gray_symbols[0])
-                elif Y < 65:
-                    gray_map[i].append(gray_symbols[1])
-                elif Y < 97:
-                    gray_map[i].append(gray_symbols[2])
-                elif Y < 129:
-                    gray_map[i].append(gray_symbols[3])
-                elif Y < 161:
-                    gray_map[i].append(gray_symbols[4])
-                elif Y < 193:
-                    gray_map[i].append(gray_symbols[5])
-                elif Y < 225:
-                    gray_map[i].append(gray_symbols[6])
-                elif Y < 256:
-                    gray_map[i].append(gray_symbols[7])
+                index = min(Y * (len(gray_symbols)-1) // 256, len(gray_symbols)-2)
+                char = gray_symbols[index]
+                ansi_char = f"\033[38;2;{r};{g};{b}m{char}\033[0m"
+                gray_map[i].append(ansi_char)
             else:
                 gray_map[i].append(gray_symbols[8])
 
@@ -73,4 +71,12 @@ with open('output.txt', 'w', encoding='utf-8') as file:
         for l in range(len(gray_map[k])):
             file.write(gray_map[k][l])
         file.write("\n")
+"""
+if printOutput:
+    term = os.environ.get("TERM", "")
+    if "xterm" in term:
+        os.system()
+"""
+    
+
 print("output successful")
