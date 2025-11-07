@@ -41,7 +41,7 @@ while True:
     print("Please enter a valid integer.")
 
 printOutput = input("Do you wanna print output after conversion? Y/N(Default N): ")
-printOutput = True if printOutput == "Y" else False
+printOutput = True if printOutput.upper() == "Y" else False
 
 newWidth = int(newWidth)
 newWidth = min(max(12, newWidth), 300)
